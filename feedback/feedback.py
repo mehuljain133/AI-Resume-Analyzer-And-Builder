@@ -72,110 +72,119 @@ class FeedbackManager:
         }
 
     def render_feedback_form(self):
-        """Render the feedback form"""
-        st.markdown("""
-            <style>
-            @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
-            
-            .feedback-container {
-                background: rgba(255, 255, 255, 0.05);
-                backdrop-filter: blur(10px);
-                padding: 30px;
-                border-radius: 20px;
-                margin: 20px 0;
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            }
-            
-            .feedback-header {
-                color: #E0E0E0;
-                font-size: 1.5em;
-                font-weight: 600;
-                margin-bottom: 25px;
-                text-align: center;
-                padding: 15px;
-                background: linear-gradient(135deg, #4CAF50, #2196F3);
-                border-radius: 12px;
-                box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);
-            }
-            
-            .feedback-section {
-                margin: 20px 0;
-                padding: 20px;
-                border-radius: 15px;
-                background: rgba(255, 255, 255, 0.03);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
-            }
-            
-            .feedback-section:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            }
-            
-            .feedback-label {
-                color: #E0E0E0;
-                font-size: 1.1em;
-                font-weight: 500;
-                margin-bottom: 10px;
-            }
-            
-            .star-rating {
-                font-size: 24px;
-                color: #FFD700;
-                cursor: pointer;
-                transition: transform 0.2s ease;
-            }
-            
-            .star-rating:hover {
-                transform: scale(1.1);
-            }
-            
-            .rating-container {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                margin: 15px 0;
-            }
-            
-            .submit-button {
-                background: linear-gradient(135deg, #4CAF50, #2196F3);
-                color: white;
-                padding: 12px 25px;
-                border: none;
-                border-radius: 8px;
-                font-weight: 600;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                width: 100%;
-                margin-top: 20px;
-            }
-            
-            .submit-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
-            }
-            
-            .textarea-container {
-                background: rgba(255, 255, 255, 0.03);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                border-radius: 8px;
-                padding: 10px;
-                margin-top: 10px;
-            }
-            
-            .textarea-container textarea {
-                width: 100%;
-                min-height: 100px;
-                background: transparent;
-                border: none;
-                color: #E0E0E0;
-                font-size: 1em;
-                resize: vertical;
-            }
-            </style>
+        <style>
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+.feedback-container {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    padding: 30px;
+    border-radius: 18px;
+    margin: 20px 0;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.feedback-header {
+    color: #E0E0E0;
+    font-size: 1.8em;
+    font-weight: 600;
+    margin-bottom: 25px;
+    text-align: center;
+    padding: 15px;
+    background: linear-gradient(135deg, #4CAF50, #2196F3);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);
+}
+
+.feedback-section {
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feedback-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+}
+
+.feedback-label {
+    color: #E0E0E0;
+    font-size: 1.2em;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.star-rating {
+    font-size: 26px;
+    color: #FFD700;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.star-rating:hover {
+    transform: scale(1.15);
+    color: #ffcc00;
+}
+
+.rating-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.submit-button {
+    background: linear-gradient(135deg, #4CAF50, #2196F3);
+    color: white;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    width: 100%;
+    margin-top: 20px;
+    font-size: 1.1em;
+}
+
+.submit-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4);
+}
+
+.textarea-container {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 10px;
+    transition: border 0.3s ease;
+}
+
+.textarea-container textarea {
+    width: 100%;
+    min-height: 120px;
+    background: transparent;
+    border: none;
+    color: #E0E0E0;
+    font-size: 1em;
+    resize: vertical;
+    outline: none;
+}
+
+.textarea-container textarea:focus {
+    border: 1px solid #4FD1C5;
+    box-shadow: 0 0 10px rgba(79, 209, 197, 0.4);
+}
+</style>
+
             """, unsafe_allow_html=True)
 
         st.markdown('<div class="feedback-container">', unsafe_allow_html=True)
