@@ -1015,10 +1015,10 @@ class ResumeApp:
         st.markdown(f"""
             <div class="profile-section">
                 <img src="{image_base64 if image_base64 else 'https://avatars.githubusercontent.com/Hunterdii'}" 
-                     alt="Het Patel" 
+                     alt="Mehul Jain" 
                      class="profile-image"
                      onerror="this.onerror=null; this.src='https://avatars.githubusercontent.com/Hunterdii';">
-                <h2 class="profile-name">Het Patel (Hunterdii)</h2>
+                <h2 class="profile-name">Mehul Jain (Hunterdii)</h2>
                 <p class="profile-title">Full Stack Developer & AI/ML Enthusiast</p>
                 <div class="social-links">
                     <a href="https://github.com/Hunterdii" class="social-link" target="_blank">
