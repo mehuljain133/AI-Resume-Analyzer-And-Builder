@@ -1,7 +1,10 @@
 streamlit
 streamlit-option-menu
+streamlit_extras
+streamlit-lottie
 python-docx
 pandas
+numpy
 plotly
 pillow
 python-dotenv
@@ -10,8 +13,11 @@ nltk
 scikit-learn
 sqlalchemy
 openpyxl
-streamlit-lottie
 requests
 spacy
 PyPDF2
-python-dotenv
+langchain==0.0.302
+openai==1.14.1
+tiktoken==0.5.2
+faiss-cpu==1.7.4
+selenium
