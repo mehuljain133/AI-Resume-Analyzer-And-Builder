@@ -1029,7 +1029,7 @@ class ResumeApp:
                     </a>
                 </div>
                 <p class="bio-text">
-                    Hello! I'm a passionate Full Stack Developer with expertise in AI and Machine Learning. 
+                    Hello! I'm a passionate Developer with expertise in AI and Machine Learning. 
                     I created Smart Resume AI to revolutionize how job seekers approach their career journey. 
                     With my background in both software development and AI, I've designed this platform to 
                     provide intelligent, data-driven insights for resume optimization.
