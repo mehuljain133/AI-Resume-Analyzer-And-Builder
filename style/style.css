@@ -38,19 +38,9 @@ body {
     color: var(--text-primary);
 }
 
-/* Global Dark Theme Styles */
-body {
-    background-color: var(--bg-darker);
-    color: var(--text-primary);
-}
-
-.stApp {
-    background: var(--bg-darker);
-}
-
 /* Sidebar Styling */
 .css-1d391kg {
-    background: linear-gradient(180deg, #2D2D2D 0%, #1E1E1E 100%);
+    background: var(--secondary-gradient);
 }
 
 .css-1d391kg .stSelectbox label {
@@ -105,30 +95,8 @@ body {
     box-shadow: 0 0 0 1px var(--accent-color);
 }
 
-/* Streamlit Text Input Base Styles */
-.stTextInput > div > div {
-    background: var(--bg-light);
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
-    border-radius: 8px;
-    padding: 0;
-}
-
-.stTextInput > div > div:focus-within {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 1px var(--accent-color);
-}
-
 /* Streamlit Password Input Styles */
-div[data-baseweb="base-input"] {
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-}
-
 div[data-baseweb="input"] {
-    position: relative !important;
     background: var(--bg-light) !important;
     border: 1px solid var(--border-color) !important;
     border-radius: 8px !important;
@@ -174,30 +142,12 @@ div[data-baseweb="input"] button {
     color: var(--text-secondary) !important;
     cursor: pointer !important;
     z-index: 2 !important;
-    height: auto !important;
-    min-height: auto !important;
-    width: auto !important;
-    min-width: auto !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
 }
 
 /* Eye Icon Hover */
 div[data-baseweb="input"] button:hover,
 div[data-baseweb="input"] button:focus {
-    background: none !important;
-    border: none !important;
-    box-shadow: none !important;
     color: var(--accent-color) !important;
-}
-
-/* Remove any inner containers/wrappers styling */
-div[data-baseweb="input"] > div {
-    border: none !important;
-    background: transparent !important;
-    padding: 0 !important;
-    margin: 0 !important;
 }
 
 /* Admin Login Section */
@@ -220,10 +170,6 @@ div[data-baseweb="input"] > div {
     cursor: pointer;
     font-weight: 500;
     height: 45px;
-}
-
-.stExpander .stButton > button:hover {
-    background: var(--accent-color-dark);
 }
 
 /* File Uploader */
@@ -296,20 +242,6 @@ h1 {
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
     border-color: var(--accent-color);
-}
-
-.resume-template {
-    background: var(--bg-light);
-    border-radius: 10px;
-    padding: 1rem;
-    margin: 0.5rem;
-    border: 2px solid var(--border-color);
-    transition: all 0.3s ease;
-}
-
-.resume-template:hover {
-    border-color: var(--accent-color);
-    transform: scale(1.02);
 }
 
 /* Feedback Section */
@@ -463,7 +395,7 @@ h1 {
         padding: 1rem;
     }
     
-    .stcard {
+    .stCard {
         padding: 1rem;
     }
     
@@ -520,11 +452,6 @@ h1 {
     background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
     animation: rotate 20s linear infinite;
     z-index: 0;
-}
-
-@keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
 }
 
 /* Resume builder enhancements */
@@ -659,7 +586,7 @@ h1 {
 
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
-    .stcard {
+    .stCard {
         background: #2d2d2d;
         border-color: #3d3d3d;
     }
@@ -838,11 +765,6 @@ h1 {
     animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
 /* Chart Container */
 .chart-container {
     background: var(--bg-dark);
@@ -889,27 +811,6 @@ h1 {
 
 .modern-table tr:hover td {
     background: rgba(0, 180, 219, 0.05);
-}
-
-/* Tooltip */
-.tooltip {
-    position: relative;
-    display: inline-block;
-}
-
-.tooltip:hover::before {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 0.5rem 1rem;
-    background: var(--bg-dark);
-    color: var(--text-primary);
-    border-radius: 4px;
-    font-size: 0.875rem;
-    white-space: nowrap;
-    z-index: 1000;
 }
 
 /* Custom Scrollbar */
@@ -1185,7 +1086,7 @@ h1 {
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translate Y(0);
     }
 }
 
@@ -1280,317 +1181,4 @@ h1 {
     100% {
         background-position: 0% 50%;
     }
-}
-
-/* Dashboard Styles */
-.dashboard-container {
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.analytics-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin: 2rem 0;
-}
-
-.stat-card {
-    background: rgba(20, 28, 34, 0.7);
-    border-radius: 16px;
-    padding: 2rem;
-    text-align: center;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-}
-
-.stat-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--accent-color);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-}
-
-.stat-icon {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto 1.5rem;
-    background: linear-gradient(135deg, rgba(0, 180, 219, 0.2), rgba(0, 131, 176, 0.2));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.stat-icon i {
-    font-size: 1.8rem;
-    color: var(--accent-color);
-}
-
-.stat-card h4 {
-    color: var(--text-primary);
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-}
-
-.stat-number {
-    font-size: 2.5rem;
-    font-weight: 600;
-    background: linear-gradient(45deg, #00b4db, #0083b0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin: 0;
-}
-
-.dashboard-section {
-    background: rgba(20, 28, 34, 0.7);
-    border-radius: 16px;
-    padding: 2rem;
-    margin: 2rem 0;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-}
-
-.dashboard-section h3 {
-    color: var(--accent-color);
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid rgba(0, 180, 219, 0.3);
-}
-
-.empty-state {
-    text-align: center;
-    padding: 3rem 1rem;
-}
-
-.empty-state i {
-    font-size: 2.5rem;
-    color: var(--accent-color);
-    margin-bottom: 1rem;
-    opacity: 0.7;
-}
-
-.empty-state p {
-    font-size: 1.1rem;
-    color: var(--text-secondary);
-    margin: 0;
-}
-
-.activity-list, .suggestions-list {
-    min-height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.no-activity, .no-suggestions {
-    text-align: center;
-    color: var(--text-secondary);
-    font-style: italic;
-    padding: 2rem;
-}
-
-.activity-list {
-    margin-top: 1rem;
-}
-
-.activity-item {
-    display: flex;
-    align-items: center;
-    padding: 1rem;
-    background: rgba(0, 180, 219, 0.1);
-    border-radius: 8px;
-    margin-bottom: 1rem;
-}
-
-.activity-item i {
-    font-size: 1.2rem;
-    color: var(--accent-color);
-    margin-right: 1rem;
-}
-
-.activity-item p {
-    margin: 0;
-    flex-grow: 1;
-    color: var(--text-primary);
-}
-
-.activity-time {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-}
-
-.suggestions-list {
-    margin-top: 1rem;
-}
-
-.suggestion-item {
-    display: flex;
-    align-items: center;
-    padding: 1rem;
-    background: rgba(0, 180, 219, 0.1);
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    transition: all 0.3s ease;
-}
-
-.suggestion-item:hover {
-    background: rgba(0, 180, 219, 0.2);
-    transform: translateX(5px);
-}
-
-.suggestion-item i {
-    font-size: 1.2rem;
-    color: var(--accent-color);
-    margin-right: 1rem;
-}
-
-.suggestion-item p {
-    margin: 0;
-    color: var(--text-primary);
-}
-
-.skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.skill-tag {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    background: rgba(0, 180, 219, 0.1);
-    border-radius: 20px;
-    transition: all 0.3s ease;
-}
-
-.skill-tag:hover {
-    background: rgba(0, 180, 219, 0.2);
-    transform: translateY(-2px);
-}
-
-.skill-tag i {
-    color: var(--accent-color);
-    margin-right: 0.5rem;
-    font-size: 0.9rem;
-}
-
-.skill-tag span {
-    color: var(--text-primary);
-    font-size: 0.9rem;
-}
-
-.activity-content {
-    flex-grow: 1;
-    margin-right: 1rem;
-}
-
-.activity-content p {
-    margin: 0;
-    color: var(--text-primary);
-}
-
-.password-field {
-    position: relative;
-    width: 100%;
-    margin: 8px 0;
-    border-radius: 8px;
-    overflow: hidden; /* This will prevent the border overlap */
-}
-
-.password-field input[type="password"] {
-    width: 100%;
-    padding: 12px 40px 12px 12px;
-    background: var(--bg-light);
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
-    border-radius: 8px;
-    font-size: 14px;
-    box-sizing: border-box;
-    margin: 0;
-    position: relative;
-    z-index: 1; /* Lower z-index than the eye icon */
-}
-
-.password-field .eye-icon {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: var(--text-secondary);
-    z-index: 3; /* Higher z-index to stay above everything */
-    background: none;
-    border: none;
-    padding: 0;
-    pointer-events: auto; /* Ensure the icon remains clickable */
-}
-
-/* Remove any default outlines or borders that might cause overlap */
-.password-field input[type="password"]:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 1px var(--accent-color);
-}
-
-/* Feedback Form Styles */
-.stTextArea textarea {
-    background: rgba(255, 255, 255, 0.03) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-radius: 8px !important;
-    color: var(--text-primary) !important;
-    font-size: 1em !important;
-    padding: 12px !important;
-}
-
-.stTextArea textarea:focus {
-    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.3) !important;
-    border-color: var(--accent-color) !important;
-}
-
-.stSlider > div > div > div {
-    background: linear-gradient(135deg, #4CAF50, #2196F3) !important;
-}
-
-.stSlider > div > div > div > div {
-    background: white !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
-}
-
-.feedback-animation {
-    animation: fadeInUp 0.5s ease-out;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Custom Scrollbar for Feedback Form */
-.feedback-container::-webkit-scrollbar {
-    width: 8px;
-}
-
-.feedback-container::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 4px;
-}
-
-.feedback-container::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #4CAF50, #2196F3);
-    border-radius: 4px;
-}
-
-.feedback-container::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #45a049, #1e88e5);
 }
