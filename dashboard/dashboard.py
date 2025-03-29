@@ -13,100 +13,110 @@ class DashboardManager:
     def __init__(self):
         self.conn = get_database_connection()
         self.colors = {
-            'primary': '#4CAF50',
-            'secondary': '#2196F3',
-            'warning': '#FFA726',
-            'danger': '#F44336',
-            'info': '#00BCD4',
-            'success': '#66BB6A',
-            'purple': '#9C27B0',
-            'background': '#1E1E1E',
-            'card': '#2D2D2D',
-            'text': '#FFFFFF',
-            'subtext': '#B0B0B0'
+            'primary': '#007BFF',    # Bright Blue
+        'secondary': '#6C757D',  # Muted Gray
+        'warning': '#FFC107',    # Yellow
+        'danger': '#DC3545',     # Red
+        'info': '#17A2B8',       # Teal
+        'success': '#28A745',    # Green
+        'purple': '#6F42C1',     # Deep Purple
+        'background': '#121212', # Dark Mode Black
+        'card': '#1E1E1E',       # Slightly Lighter Dark Gray
+        'text': '#E0E0E0',       # Light Gray for Better Contrast
+        'subtext': '#A0A0A0'     # Muted Gray for Subtext
         }
         
     def apply_dashboard_style(self):
         """Apply custom styling for dashboard"""
         st.markdown("""
             <style>
-                .dashboard-title {
-                    font-size: 2.5rem;
-                    font-weight: bold;
-                    margin-bottom: 2rem;
-                    color: white;
-                    text-align: center;
-                }
-                
-                .metric-card {
-                    background-color: #2D2D2D;
-                    border-radius: 15px;
-                    padding: 1.5rem;
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                    transition: transform 0.3s ease;
-                    height: 100%;
-                }
-                
-                .metric-card:hover {
-                    transform: translateY(-5px);
-                }
-                
-                .metric-value {
-                    font-size: 2.5rem;
-                    font-weight: bold;
-                    color: #4CAF50;
-                    margin: 0.5rem 0;
-                }
-                
-                .metric-label {
-                    font-size: 1rem;
-                    color: #B0B0B0;
-                }
-                
-                .trend-up {
-                    color: #4CAF50;
-                    font-size: 1.2rem;
-                }
-                
-                .trend-down {
-                    color: #F44336;
-                    font-size: 1.2rem;
-                }
-                
-                .chart-container {
-                    background-color: #2D2D2D;
-                    border-radius: 15px;
-                    padding: 1.5rem;
-                    margin: 1rem 0;
-                }
-                
-                .section-title {
-                    font-size: 1.5rem;
-                    color: white;
-                    margin: 2rem 0 1rem 0;
-                }
-                
-                .stPlotlyChart {
-                    background-color: #2D2D2D;
-                    border-radius: 15px;
-                    padding: 1rem;
-                }
-                
-                div[data-testid="stHorizontalBlock"] > div {
-                    background-color: #2D2D2D;
-                    border-radius: 15px;
-                    padding: 1rem;
-                    margin: 0.5rem;
-                }
+    .dashboard-title {
+        font-size: 2.8rem;
+        font-weight: bold;
+        margin-bottom: 2rem;
+        color: #FFFFFF;
+        text-align: center;
+        text-transform: uppercase;
+    }
 
-                [data-testid="stMetricValue"] {
-                    font-size: 2rem !important;
-                }
+    .metric-card {
+        background-color: #1E1E1E;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease-in-out;
+        height: 100%;
+    }
 
-                [data-testid="stMetricLabel"] {
-                    font-size: 1rem !important;
-                }
-            </style>
+    .metric-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .metric-value {
+        font-size: 2.8rem;
+        font-weight: bold;
+        color: #28A745; /* More vibrant green */
+        margin: 0.5rem 0;
+    }
+
+    .metric-label {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .trend-up {
+        color: #28A745;
+        font-size: 1.2rem;
+    }
+
+    .trend-down {
+        color: #DC3545;
+        font-size: 1.2rem;
+    }
+
+    .chart-container {
+        background-color: #1E1E1E;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .section-title {
+        font-size: 1.6rem;
+        color: #FFFFFF;
+        margin: 2rem 0 1rem 0;
+        font-weight: bold;
+        border-bottom: 2px solid #FFC107;
+        padding-bottom: 5px;
+    }
+
+    .stPlotlyChart {
+        background-color: #1E1E1E;
+        border-radius: 12px;
+        padding: 1rem;
+    }
+
+    div[data-testid="stHorizontalBlock"] > div {
+        background-color: #1E1E1E;
+        border-radius: 12px;
+        padding: 1rem;
+        margin: 0.5rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    [data-testid="stMetricValue"] {
+        font-size: 2.5rem !important;
+        font-weight: bold;
+    }
+
+    [data-testid="stMetricLabel"] {
+        font-size: 1rem !important;
+        color: rgba(255, 255, 255, 0.7);
+    }
+</style>
+
         """, unsafe_allow_html=True)
 
     def get_resume_metrics(self):
@@ -616,110 +626,143 @@ class DashboardManager:
         # Apply styling
         st.markdown("""
             <style>
-                .dashboard-container {
-                    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-                    padding: 2rem;
-                    border-radius: 20px;
-                    margin: -1rem -1rem 2rem -1rem;
-                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-                }
-                .dashboard-title {
-                    color: #4FD1C5;
-                    font-size: 2.5rem;
-                    margin-bottom: 0.5rem;
-                    display: flex;
-                    align-items: center;
-                    gap: 1rem;
-                }
-                .dashboard-icon {
-                    background: rgba(79, 209, 197, 0.2);
-                    padding: 0.5rem;
-                    border-radius: 12px;
-                }
-                .stats-grid {
-                    display: grid;
-                    grid-template-columns: repeat(4, 1fr);
-                    gap: 1.5rem;
-                    margin-top: 2rem;
-                }
-                .stat-card {
-                    background: rgba(255, 255, 255, 0.05);
-                    backdrop-filter: blur(10px);
-                    padding: 1.5rem;
-                    border-radius: 16px;
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    transition: all 0.3s ease;
-                }
-                .stat-card:hover {
-                    transform: translateY(-5px);
-                    background: rgba(255, 255, 255, 0.1);
-                }
-                .stat-value {
-                    font-size: 2.5rem;
-                    font-weight: bold;
-                    margin: 0;
-                    color: #4FD1C5;
-                }
-                .stat-label {
-                    font-size: 1rem;
-                    color: rgba(255, 255, 255, 0.7);
-                    margin: 0.5rem 0 0 0;
-                }
-                .section-title {
-                    color: #4FD1C5;
-                    font-size: 1.5rem;
-                    margin: 1rem 0 0.5rem 0;
-                    padding-bottom: 0.5rem;
-                    border-bottom: 2px solid rgba(79, 209, 197, 0.2);
-                }
-                .chart-container {
-                    background: rgba(255, 255, 255, 0.05);
-                    border-radius: 16px;
-                    padding: 1rem;
-                    margin-bottom: 1rem;
-                }
-                .insights-grid {
-                    display: grid;
-                    grid-template-columns: repeat(3, 1fr);
-                    gap: 1.5rem;
-                    margin-top: 1rem;
-                }
-                .insight-card {
-                    background: rgba(255, 255, 255, 0.05);
-                    padding: 1.5rem;
-                    border-radius: 16px;
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                }
-                .trend-indicator {
-                    display: inline-flex;
-                    align-items: center;
-                    padding: 0.25rem 0.5rem;
-                    border-radius: 12px;
-                    font-size: 0.875rem;
-                    margin-left: 0.5rem;
-                }
-                .trend-up {
-                    background: rgba(46, 204, 113, 0.2);
-                    color: #2ecc71;
-                }
-                .trend-down {
-                    background: rgba(231, 76, 60, 0.2);
-                    color: #e74c3c;
-                }
-                @keyframes fadeInUp {
-                    from {
-                        opacity: 0;
-                        transform: translateY(20px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-                .animate-fade-in {
-                    animation: fadeInUp 0.5s ease-out forwards;
-                }
-            </style>
+    .dashboard-container {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        padding: 2rem;
+        border-radius: 20px;
+        margin: -1rem -1rem 2rem -1rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .dashboard-title {
+        color: #4FD1C5;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-weight: 600;
+    }
+
+    .dashboard-icon {
+        background: rgba(79, 209, 197, 0.2);
+        padding: 0.75rem;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .stat-card {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(12px);
+        padding: 1.5rem;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #4FD1C5;
+        margin: 0;
+    }
+
+    .stat-label {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.8);
+        margin: 0.5rem 0 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .section-title {
+        color: #4FD1C5;
+        font-size: 1.5rem;
+        margin: 1rem 0 0.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid rgba(79, 209, 197, 0.3);
+        font-weight: 600;
+    }
+
+    .chart-container {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    }
+
+    .insights-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    .insight-card {
+        background: rgba(255, 255, 255, 0.08);
+        padding: 1.5rem;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .insight-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .trend-indicator {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: 12px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-left: 0.5rem;
+    }
+
+    .trend-up {
+        background: rgba(46, 204, 113, 0.2);
+        color: #2ecc71;
+    }
+
+    .trend-down {
+        background: rgba(231, 76, 60, 0.2);
+        color: #e74c3c;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fade-in {
+        animation: fadeInUp 0.5s ease-out forwards;
+    }
+</style>
+
         """, unsafe_allow_html=True)
 
         # Dashboard Header
@@ -1008,99 +1051,109 @@ class DashboardManager:
         }
 
     def create_enhanced_ats_gauge(self, value):
-        """Create an enhanced ATS score gauge chart"""
-        reference = 70  # Target score
-        delta = value - reference
-        
-        fig = go.Figure(go.Indicator(
-            mode="gauge+number+delta",
-            value=value,
-            delta={
-                'reference': reference,
-                'valueformat': '.1f',
-                'increasing': {'color': '#2ecc71'},
-                'decreasing': {'color': '#e74c3c'}
+        """Create an enhanced ATS score gauge chart with animation and refined UI."""
+    reference = 70  # Target score
+    delta = value - reference
+
+    fig = go.Figure(go.Indicator(
+        mode="gauge+number+delta",
+        value=value,
+        delta={
+            'reference': reference,
+            'valueformat': '.1f',
+            'increasing': {'color': '#2ecc71'},
+            'decreasing': {'color': '#e74c3c'}
+        },
+        number={'font': {'size': 42, 'color': 'white'}},
+        gauge={
+            'axis': {
+                'range': [0, 100],
+                'tickwidth': 1,
+                'tickcolor': 'white',
+                'tickfont': {'color': 'white'}
             },
-            number={'font': {'size': 40, 'color': 'white'}},
-            gauge={
-                'axis': {
-                    'range': [0, 100],
-                    'tickwidth': 1,
-                    'tickcolor': 'white',
-                    'tickfont': {'color': 'white'}
-                },
-                'bar': {'color': '#3498db'},
-                'bgcolor': 'rgba(0,0,0,0)',
-                'borderwidth': 2,
-                'bordercolor': 'white',
-                'steps': [
-                    {'range': [0, 40], 'color': '#e74c3c'},
-                    {'range': [40, 70], 'color': '#f1c40f'},
-                    {'range': [70, 100], 'color': '#2ecc71'}
-                ],
-                'threshold': {
-                    'line': {'color': 'white', 'width': 4},
-                    'thickness': 0.75,
-                    'value': reference
-                }
+            'bar': {'color': '#3498db'},
+            'bgcolor': 'rgba(0,0,0,0)',
+            'borderwidth': 2,
+            'bordercolor': 'white',
+            'steps': [
+                {'range': [0, 40], 'color': '#e74c3c'},
+                {'range': [40, 70], 'color': '#f1c40f'},
+                {'range': [70, 100], 'color': '#2ecc71'}
+            ],
+            'threshold': {
+                'line': {'color': 'white', 'width': 5},  # Thicker line for visibility
+                'thickness': 1,
+                'value': reference
             }
-        ))
-        
-        fig.update_layout(
-            title={
-                'text': 'ATS Score Performance',
-                'font': {'size': 24, 'color': 'white'},
-                'y': 0.85
-            },
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)',
-            font={'color': 'white'},
-            height=350,
-            margin=dict(l=20, r=20, t=80, b=20)
-        )
+        }
+    ))
+
+    fig.update_layout(
+        title={
+            'text': 'ATS Score Performance',
+            'font': {'size': 24, 'color': 'white'},
+            'y': 0.85
+        },
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font={'color': 'white'},
+        height=350,
+        margin=dict(l=30, r=30, t=80, b=30),
+        transition={'duration': 500}  # Smooth animation
+    )
         
         return fig
 
     def create_skill_distribution_chart(self):
-        """Create a skill distribution chart"""
-        categories, counts = self.get_skill_distribution()
-        
-        fig = go.Figure(data=[
-            go.Bar(
-                x=categories,
-                y=counts,
-                marker_color=self.colors['info'],
-                text=counts,
-                textposition='auto',
-            )
-        ])
-        
-        fig.update_layout(
-            title={
-                'text': 'Skill Distribution',
-                'y':0.95,
-                'x':0.5,
-                'xanchor': 'center',
-                'yanchor': 'top'
-            },
-            height=350,  
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)',
-            font=dict(color=self.colors['text']),
-            margin=dict(l=40, r=40, t=60, b=40),
-            xaxis=dict(
-                showgrid=False,
-                showline=True,
-                linecolor='rgba(255,255,255,0.2)',
-                tickfont=dict(size=12)
+        """Generate an enhanced Skill Distribution bar chart with smooth animations."""
+    
+    fig = go.Figure(data=[
+        go.Bar(
+            x=categories,
+            y=counts,
+            marker=dict(
+                color=counts,  # Dynamic color based on count values
+                colorscale='Blues',  # Gradient effect
+                showscale=False
             ),
-            yaxis=dict(
-                showgrid=True,
-                gridcolor='rgba(255,255,255,0.1)',
-                zeroline=False
-            ),
-            bargap=0.3
+            text=counts,
+            textposition='auto',
         )
+    ])
+
+    fig.update_layout(
+        title={
+            'text': 'Skill Distribution',
+            'y': 0.95,
+            'x': 0.5,
+            'xanchor': 'center',
+            'yanchor': 'top',
+            'font': {'size': 22, 'color': colors['text']}
+        },
+        height=350,  
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        font=dict(color=colors['text']),
+        margin=dict(l=40, r=40, t=60, b=40),
+        xaxis=dict(
+            showgrid=False,
+            showline=True,
+            linecolor='rgba(255,255,255,0.2)',
+            tickfont=dict(size=12),
+            title="Skills"
+        ),
+        yaxis=dict(
+            showgrid=True,
+            gridcolor='rgba(255,255,255,0.1)',
+            zeroline=False,
+            title="Count",
+            automargin=True
+        ),
+        bargap=0.3,
+        transition={'duration': 500}  # Smooth animation
+    )
+
         return fig
 
     def create_submission_trends_chart(self):
