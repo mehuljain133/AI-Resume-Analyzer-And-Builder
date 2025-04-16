@@ -2852,27 +2852,6 @@ class ResumeApp:
 
 
 
-#     def show_repo_notification(self):
-#         message = """
-# <div style="background-color: #1e1e1e; border-radius: 10px; border: 1px solid #4b6cb7; padding: 10px; margin: 10px 0; color: white;">
-#     <div style="margin-bottom: 10px;">Check out these other repositories:</div>
-#     <div style="margin-bottom: 5px;"><b>Hacking Resources:</b></div>
-#     <ul style="margin-top: 0; padding-left: 20px;">
-#     </ul>
-#     <div style="margin-bottom: 5px;"><b>Programming Languages:</b></div>
-#     <ul style="margin-top: 0; padding-left: 20px;">
-#     </ul>
-#     <div style="margin-bottom: 5px;"><b>Data Structures & Algorithms:</b></div>
-#     <ul style="margin-top: 0; padding-left: 20px;">
-#     </ul>
-#     <div style="margin-bottom: 5px;"><b>AI/ML Projects:</b></div>
-#     <ul style="margin-top: 0; padding-left: 20px;">
-#     </ul>
-#     <div style="margin-top: 10px;">If you find this project helpful, please consider ⭐ starring the repo!</div>
-# </div>
-# """
-#         st.sidebar.markdown(message, unsafe_allow_html=True)
-
 
     def main(self):
         """Main application entry point"""
