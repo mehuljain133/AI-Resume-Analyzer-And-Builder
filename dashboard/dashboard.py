@@ -262,7 +262,7 @@ class DashboardManager:
             if export_format == "Excel":
                 excel_data = self.export_to_excel()
                 if excel_data:
-                    st .sidebar.download_button(
+                    st.sidebar.download_button(
                         "⬇️ Download Excel",
                         data=excel_data,
                         file_name=f"resume_data_{datetime.now().strftime('%Y%m%d_%H%M')}.xlsx",
@@ -325,15 +325,6 @@ class DashboardManager:
             print(f"Error fetching resume data: {str(e)}")
             return []
 
-    def delete_resume(self, resume_id):
-        """Delete a resume from the database"""
-        cursor = self.conn.cursor()
-        try:
-            cursor.execute("DELETE FROM resume_data WHERE id = ?", (resume_id,))
-            self.conn.commit()
-        except Exception as e:
-            st.error(f"Error deleting resume: {str(e)}")
-
     def render_resume_data_section(self):
         """Render resume data section with Excel download"""
         st.markdown("<h2 class='section-title'>Resume Submissions</h2>", unsafe_allow_html=True)
@@ -346,7 +337,7 @@ class DashboardManager:
             columns = [
                 'ID', 'Name', 'Email', 'Phone', 'LinkedIn', 'GitHub', 
                 'Portfolio', 'Target Role', 'Target Category', 'Submission Date',
-                'ATS Score', 'Keyword Match', 'Format Score', 'Section Score', 'Actions'
+                'ATS Score', 'Keyword Match', 'Format Score', 'Section Score'
             ]
             df = pd.DataFrame(resume_data, columns=columns)
             
@@ -355,43 +346,84 @@ class DashboardManager:
             for col in score_columns:
                 df[col] = df[col].apply(lambda x: f"{x*100:.1f}%" if pd.notnull(x) else "N/A")
             
-            # Add delete buttons
-            delete_buttons = []
-            for index, row in df.iterrows():
-                delete_button = st.button(f"🗑️ Delete", key=f"delete_{row['ID']}")
-                delete_buttons.append(delete_button)
+            # Style the dataframe
+            st.markdown("""
+            <style>
+            .resume-data {
+                background-color: #2D2D2D;
+                border-radius: 10px;
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+            </style>
+            """, unsafe_allow_html=True)
             
-            # Handle delete button clicks
-            for index, button in enumerate(delete_buttons):
-                if button:
-                    self.delete_resume(df.iloc[index]['ID'])
-                    st.success(f"Resume ID {df.iloc[index]['ID']} deleted successfully!")
-                    st.experimental_rerun()  # Refresh the app to show updated data
-            
-            # Display the DataFrame
-            st.dataframe(df, use_container_width=True, hide_index=True)
-            
-            # Add download buttons (same as before)
-            col1, col2 = st.columns(2)
-            with col1:
-                # Download filtered data
-                excel_buffer = BytesIO()
-                df.to_excel(excel_buffer, index=False, engine='openpyxl')
-                excel_buffer.seek(0)
+            with st.container():
+                st.markdown('<div class="resume-data">', unsafe_allow_html=True)
                 
-                st.download_button(
-                    label="📥 Download All Data",
-                    data=excel_buffer,
-                    file_name=f"resume_data_all_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    key="download_all_data"
+                # Add filters
+                col1, col2 = st.columns(2)
+                with col1:
+                    target_role = st.selectbox(
+                        "Filter by Target Role",
+                        options=["All"] + list(df['Target Role'].unique()),
+                        key="role_filter"
+                    )
+                with col2:
+                    target_category = st.selectbox(
+                        "Filter by Category",
+                        options=["All"] + list(df['Target Category'].unique()),
+                        key="category_filter"
+                    )
+                
+                # Apply filters
+                filtered_df = df.copy()
+                if target_role != "All":
+                    filtered_df = filtered_df[filtered_df['Target Role'] == target_role]
+                if target_category != "All":
+                    filtered_df = filtered_df[filtered_df['Target Category'] == target_category]
+                
+                # Display filtered data
+                st.dataframe(
+                    filtered_df,
+                    use_container_width=True,
+                    hide_index=True
                 )
                 
-            st.markdown('</div>', unsafe_allow_html=True)
+                # Add download buttons
+                col1, col2 = st.columns(2)
+                with col1:
+                    # Download filtered data
+                    excel_buffer = BytesIO()
+                    filtered_df.to_excel(excel_buffer, index=False, engine='openpyxl')
+                    excel_buffer.seek(0)
+                    
+                    st.download_button(
+                        label="📥 Download Filtered Data",
+                        data=excel_buffer,
+                        file_name=f"resume_data_filtered_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        key="download_filtered_data"
+                    )
+                
+                with col2:
+                    # Download all data
+                    excel_buffer_all = BytesIO()
+                    df.to_excel(excel_buffer_all, index=False, engine='openpyxl')
+                    excel_buffer_all.seek(0)
+                    
+                    st.download_button(
+                        label="📥 Download All Data",
+                        data=excel_buffer_all,
+                        file_name=f"resume_data_all_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        key="download_all_data"
+                    )
+                
+                st.markdown('</div>', unsafe_allow_html=True)
         else:
             st.info("No resume submissions available")
 
- ```python
     def render_admin_section(self):
         """Render admin section with logs and Excel download"""
         # Render resume data section
@@ -527,7 +559,7 @@ class DashboardManager:
         """
         try:
             df = pd.read_sql_query(query, self.conn)
- return df.to_json(orient='records', date_format='iso')
+            return df.to_json(orient='records', date_format='iso')
         except Exception as e:
             st.error(f"Error exporting to JSON: {str(e)}")
             return None
@@ -654,8 +686,7 @@ class DashboardManager:
                 }
                 .insight-card {
                     background: rgba(255, 255, 255, 0.05);
-                    padding: 1.5 ```python
-                    rem;
+                    padding: 1.5rem;
                     border-radius: 16px;
                     border: 1px solid rgba(255, 255, 255, 0.1);
                 }
@@ -775,8 +806,7 @@ class DashboardManager:
         with col1:
             st.markdown('<div class="chart-container">', unsafe_allow_html=True)
             fig = self.create_submission_trends_chart()
-            st.plot ```python
-            fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True)
             st.markdown('</div>', unsafe_allow_html=True)
 
         with col2:
@@ -905,7 +935,7 @@ class DashboardManager:
             change = scores[0] - scores[1]
             insights.append({
                 'title': 'Weekly Trend',
- 'icon': '📈',
+                'icon': '📈',
                 'description': f"ATS scores have {'improved' if change >= 0 else 'decreased'} by {abs(change):.1f}% in the last week",
                 'trend_class': 'trend-up' if change >= 0 else 'trend-down',
                 'trend_icon': '↑' if change >= 0 else '↓',
@@ -939,7 +969,7 @@ class DashboardManager:
         """)
         top_skills = cursor.fetchall()
         if top_skills:
-            skills_text = f"Most in-demand skills: {top_skills[0][0]} ({top_skills[0][1]} resumes), {top_skills[1][0]} ({top_skills[1][1]} resumes), {top_skills[2][0]} ({top_skills[2][1]} resumes)"
+            skills_text = f"Most in-demand skills: Python ({top_skills[0][1]} resumes), Java ({top_skills[1][1]} resumes), Express ({top_skills[2][1]} resumes)"
             insights.append({
                 'title': 'Top Skills',
                 'icon': '💡',
@@ -1023,8 +1053,7 @@ class DashboardManager:
                 'y': 0.85
             },
             paper_bgcolor='rgba(0,0,0,0)',
-            plot ```python
-            bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)',
             font={'color': 'white'},
             height=350,
             margin=dict(l=20, r=20, t=80, b=20)
