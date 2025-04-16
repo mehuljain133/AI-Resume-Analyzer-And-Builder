@@ -58,89 +58,141 @@ JOB_SUGGESTIONS = [
 ]
 
 
-# Location suggestions
+# Location suggestions - organized by states and major cities
 LOCATION_SUGGESTIONS = [
-    {"text": "Bangalore", "icon": "📍"},
-    {"text": "Mumbai", "icon": "📍"},
-    {"text": "Delhi", "icon": "📍"},
-    {"text": "Hyderabad", "icon": "📍"},
-    {"text": "Pune", "icon": "📍"},
-    {"text": "Chennai", "icon": "📍"},
-    {"text": "Noida", "icon": "📍"},
-    {"text": "Gurgaon", "icon": "📍"},
-    {"text": "Ahmedabad", "icon": "📍"},
-    {"text": "Kolkata", "icon": "📍"},
-    {"text": "Vadodara", "icon": "📍"},
-    {"text": "Remote", "icon": "🏠"},
-    {"text": "Work from Home", "icon": "🏠"},
-    {"text": "Mysore", "icon": "📍"},
-    {"text": "Hubli", "icon": "📍"},
-    {"text": "Mangalore", "icon": "📍"},
-    {"text": "Belgaum", "icon": "📍"},
-    {"text": "Davangere", "icon": "📍"},
-    {"text": "Nagpur", "icon": "📍"},
-    {"text": "Nashik", "icon": "📍"},
-    {"text": "Aurangabad", "icon": "📍"},
-    {"text": "Kolhapur", "icon": "📍"},
-    {"text": "Solapur", "icon": "📍"},
-    {"text": "Coimbatore", "icon": "📍"},
-    {"text": "Madurai", "icon": "📍"},
-    {"text": "Salem", "icon": "📍"},
-    {"text": "Tiruchirappalli", "icon": "📍"},
-    {"text": "Vellore", "icon": "📍"},
-    {"text": "Lucknow", "icon": "📍"},
-    {"text": "Kanpur", "icon": "📍"},
-    {"text": "Agra", "icon": "📍"},
-    {"text": "Varanasi", "icon": "📍"},
-    {"text": "Meerut", "icon": "📍"},
-    {"text": "Vijayawada", "icon": "📍"},
-    {"text": "Visakhapatnam", "icon": "📍"},
-    {"text": "Tirupati", "icon": "📍"},
-    {"text": "Guntur", "icon": "📍"},
-    {"text": "Nellore", "icon": "📍"},
-    {"text": "Kolkata", "icon": "📍"},
-    {"text": "Darjeeling", "icon": "📍"},
-    {"text": "Siliguri", "icon": "📍"},
-    {"text": "Durgapur", "icon": "📍"},
-    {"text": "Asansol", "icon": "📍"},
-    {"text": "Ahmedabad", "icon": "📍"},
-    {"text": "Surat", "icon": "📍"},
-    {"text": "Vadodara", "icon": "📍"},
-    {"text": "Rajkot", "icon": "📍"},
-    {"text": "Bhavnagar", "icon": "📍"},
-    {"text": "Jaipur", "icon": "📍"},
-    {"text": "Jodhpur", "icon": "📍"},
-    {"text": "Udaipur", "icon": "📍"},
-    {"text": "Kota", "icon": "📍"},
-    {"text": "Ajmer", "icon": "📍"},
-    {"text": "Kochi", "icon": "📍"},
-    {"text": "Thiruvananthapuram", "icon": "📍"},
-    {"text": "Kozhikode", "icon": "📍"},
-    {"text": "Thrissur", "icon": "📍"},
-    {"text": "Alappuzha", "icon": "📍"},
-    {"text": "Amritsar", "icon": "📍"},
-    {"text": "Ludhiana", "icon": "📍"},
-    {"text": "Jalandhar", "icon": "📍"},
-    {"text": "Patiala", "icon": "📍"},
-    {"text": "Bathinda", "icon": "📍"},
-    {"text": "Faridabad", "icon": "📍"},
-    {"text": "Panipat", "icon": "📍"},
-    {"text": "Ambala", "icon": "📍"},
-    {"text": "Karnal", "icon": "📍"},
-    {"text": "Hisar", "icon": "📍"},
-    {"text": "Guwahati", "icon": "📍"},
-    {"text": "Shillong", "icon": "📍"},
-    {"text": "Imphal", "icon": "📍"},
-    {"text": "Aizawl", "icon": "📍"},
-    {"text": "Gangtok", "icon": "📍"},
-    {"text": "Port Blair", "icon": "📍"},
-    {"text": "Shimla", "icon": "📍"},
-    {"text": "Dehradun", "icon": "📍"},
-    {"text": "Chandigarh", "icon": "📍"},
-    {"text": "Itanagar", "icon": "📍"}
+    # Work modes
+    {"text": "Remote", "icon": "🏠", "type": "work_mode"},
+    {"text": "Work from Home", "icon": "🏠", "type": "work_mode"},
+    {"text": "Hybrid", "icon": "🏢", "type": "work_mode"},
+    
+    # Major tech hubs
+    {"text": "Bangalore", "icon": "📍", "type": "city", "state": "Karnataka"},
+    {"text": "Mumbai", "icon": "📍", "type": "city", "state": "Maharashtra"},
+    {"text": "Delhi", "icon": "📍", "type": "city", "state": "Delhi"},
+    {"text": "Hyderabad", "icon": "📍", "type": "city", "state": "Telangana"},
+    {"text": "Pune", "icon": "📍", "type": "city", "state": "Maharashtra"},
+    {"text": "Chennai", "icon": "📍", "type": "city", "state": "Tamil Nadu"},
+    {"text": "Noida", "icon": "📍", "type": "city", "state": "Uttar Pradesh"},
+    {"text": "Gurgaon", "icon": "📍", "type": "city", "state": "Haryana"},
+    
+    # States
+    {"text": "Karnataka", "icon": "🗺️", "type": "state"},
+    {"text": "Maharashtra", "icon": "🗺️", "type": "state"},
+    {"text": "Tamil Nadu", "icon": "🗺️", "type": "state"},
+    {"text": "Telangana", "icon": "🗺️", "type": "state"},
+    {"text": "Delhi", "icon": "🗺️", "type": "state"},
+    {"text": "Uttar Pradesh", "icon": "🗺️", "type": "state"},
+    {"text": "Gujarat", "icon": "🗺️", "type": "state"},
+    {"text": "Rajasthan", "icon": "🗺️", "type": "state"},
+    {"text": "Kerala", "icon": "🗺️", "type": "state"},
+    {"text": "West Bengal", "icon": "🗺️", "type": "state"},
+    {"text": "Punjab", "icon": "🗺️", "type": "state"},
+    {"text": "Haryana", "icon": "🗺️", "type": "state"},
+    {"text": "Andhra Pradesh", "icon": "🗺️", "type": "state"},
+    {"text": "Madhya Pradesh", "icon": "🗺️", "type": "state"},
+    {"text": "Bihar", "icon": "🗺️", "type": "state"},
+    
+    # Karnataka cities
+    {"text": "Mysore", "icon": "📍", "type": "city", "state": "Karnataka"},
+    {"text": "Hubli", "icon": "📍", "type": "city", "state": "Karnataka"},
+    {"text": "Mangalore", "icon": "📍", "type": "city", "state": "Karnataka"},
+    {"text": "Belgaum", "icon": "📍", "type": "city", "state": "Karnataka"},
+    {"text": "Davangere", "icon": "📍", "type": "city", "state": "Karnataka"},
+    
+    # Maharashtra cities
+    {"text": "Nagpur", "icon": "📍", "type": "city", "state": "Maharashtra"},
+    {"text": "Nashik", "icon": "📍", "type": "city", "state": "Maharashtra"},
+    {"text": "Aurangabad", "icon": "📍", "type": "city", "state": "Maharashtra"},
+    {"text": "Kolhapur", "icon": "📍", "type": "city", "state": "Maharashtra"},
+    {"text": "Solapur", "icon": "📍", "type": "city", "state": "Maharashtra"},
+    
+    # Tamil Nadu cities
+    {"text": "Coimbatore", "icon": "📍", "type": "city", "state": "Tamil Nadu"},
+    {"text": "Madurai", "icon": "📍", "type": "city", "state": "Tamil Nadu"},
+    {"text": "Salem", "icon": "📍", "type": "city", "state": "Tamil Nadu"},
+    {"text": "Tiruchirappalli", "icon": "📍", "type": "city", "state": "Tamil Nadu"},
+    {"text": "Vellore", "icon": "📍", "type": "city", "state": "Tamil Nadu"},
+    
+    # Uttar Pradesh cities
+    {"text": "Lucknow", "icon": "📍", "type": "city", "state": "Uttar Pradesh"},
+    {"text": "Kanpur", "icon": "📍", "type": "city", "state": "Uttar Pradesh"},
+    {"text": "Agra", "icon": "📍", "type": "city", "state": "Uttar Pradesh"},
+    {"text": "Varanasi", "icon": "📍", "type": "city", "state": "Uttar Pradesh"},
+    {"text": "Meerut", "icon": "📍", "type": "city", "state": "Uttar Pradesh"},
+    
+    # Andhra Pradesh cities
+    {"text": "Vijayawada", "icon": "📍", "type": "city", "state": "Andhra Pradesh"},
+    {"text": "Visakhapatnam", "icon": "📍", "type": "city", "state": "Andhra Pradesh"},
+    {"text": "Tirupati", "icon": "📍", "type": "city", "state": "Andhra Pradesh"},
+    {"text": "Guntur", "icon": "📍", "type": "city", "state": "Andhra Pradesh"},
+    {"text": "Nellore", "icon": "📍", "type": "city", "state": "Andhra Pradesh"},
+    
+    # West Bengal cities
+    {"text": "Kolkata", "icon": "📍", "type": "city", "state": "West Bengal"},
+    {"text": "Darjeeling", "icon": "📍", "type": "city", "state": "West Bengal"},
+    {"text": "Siliguri", "icon": "📍", "type": "city", "state": "West Bengal"},
+    {"text": "Durgapur", "icon": "📍", "type": "city", "state": "West Bengal"},
+    {"text": "Asansol", "icon": "📍", "type": "city", "state": "West Bengal"},
+    
+    # Gujarat cities
+    {"text": "Ahmedabad", "icon": "📍", "type": "city", "state": "Gujarat"},
+    {"text": "Surat", "icon": "📍", "type": "city", "state": "Gujarat"},
+    {"text": "Vadodara", "icon": "📍", "type": "city", "state": "Gujarat"},
+    {"text": "Rajkot", "icon": "📍", "type": "city", "state": "Gujarat"},
+    {"text": "Bhavnagar", "icon": "📍", "type": "city", "state": "Gujarat"},
+    
+    # Rajasthan cities
+    {"text": "Jaipur", "icon": "📍", "type": "city", "state": "Rajasthan"},
+    {"text": "Jodhpur", "icon": "📍", "type": "city", "state": "Rajasthan"},
+    {"text": "Udaipur", "icon": "📍", "type": "city", "state": "Rajasthan"},
+    {"text": "Kota", "icon": "📍", "type": "city", "state": "Rajasthan"},
+    {"text": "Ajmer", "icon": "📍", "type": "city", "state": "Rajasthan"},
+    
+    # Kerala cities
+    {"text": "Kochi", "icon": "📍", "type": "city", "state": "Kerala"},
+    {"text": "Thiruvananthapuram", "icon": "📍", "type": "city", "state": "Kerala"},
+    {"text": "Kozhikode", "icon": "📍", "type": "city", "state": "Kerala"},
+    {"text": "Thrissur", "icon": "📍", "type": "city", "state": "Kerala"},
+    {"text": "Alappuzha", "icon": "📍", "type": "city", "state": "Kerala"},
+    
+    # Punjab cities
+    {"text": "Amritsar", "icon": "📍", "type": "city", "state": "Punjab"},
+    {"text": "Ludhiana", "icon": "📍", "type": "city", "state": "Punjab"},
+    {"text": "Jalandhar", "icon": "📍", "type": "city", "state": "Punjab"},
+    {"text": "Patiala", "icon": "📍", "type": "city", "state": "Punjab"},
+    {"text": "Bathinda", "icon": "📍", "type": "city", "state": "Punjab"},
+    
+    # Haryana cities
+    {"text": "Faridabad", "icon": "📍", "type": "city", "state": "Haryana"},
+    {"text": "Panipat", "icon": "📍", "type": "city", "state": "Haryana"},
+    {"text": "Ambala", "icon": "📍", "type": "city", "state": "Haryana"},
+    {"text": "Karnal", "icon": "📍", "type": "city", "state": "Haryana"},
+    {"text": "Hisar", "icon": "📍", "type": "city", "state": "Haryana"},
+    
+    # Northeast cities
+    {"text": "Guwahati", "icon": "📍", "type": "city", "state": "Assam"},
+    {"text": "Shillong", "icon": "📍", "type": "city", "state": "Meghalaya"},
+    {"text": "Imphal", "icon": "📍", "type": "city", "state": "Manipur"},
+    {"text": "Aizawl", "icon": "📍", "type": "city", "state": "Mizoram"},
+    {"text": "Gangtok", "icon": "📍", "type": "city", "state": "Sikkim"},
+    
+    # Union Territories
+    {"text": "Chandigarh", "icon": "📍", "type": "city", "state": "Chandigarh"},
+    {"text": "Port Blair", "icon": "📍", "type": "city", "state": "Andaman and Nicobar Islands"},
+    {"text": "Shimla", "icon": "📍", "type": "city", "state": "Himachal Pradesh"},
+    {"text": "Dehradun", "icon": "📍", "type": "city", "state": "Uttarakhand"},
+    {"text": "Itanagar", "icon": "📍", "type": "city", "state": "Arunachal Pradesh"}
 ]
 
+# Function to get cities by state
+def get_cities_by_state(state_name):
+    """Get list of cities for a specific state"""
+    return [loc for loc in LOCATION_SUGGESTIONS if loc.get("type") == "city" and loc.get("state") == state_name]
 
+# Function to get all states
+def get_all_states():
+    """Get list of all states"""
+    return [loc for loc in LOCATION_SUGGESTIONS if loc.get("type") == "state"]
 
 # Job types
 JOB_TYPES = [

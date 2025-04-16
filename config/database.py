@@ -285,3 +285,248 @@ def add_admin(email, password):
         return False
     finally:
         conn.close()
+
+def save_ai_analysis_data(resume_id, analysis_data):
+    """Save AI analysis data to the database"""
+    conn = get_database_connection()
+    cursor = conn.cursor()
+    
+    try:
+        # Check if the ai_analysis table exists
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS ai_analysis (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                resume_id INTEGER,
+                model_used TEXT,
+                resume_score INTEGER,
+                job_role TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (resume_id) REFERENCES resume_data (id)
+            )
+        """)
+        
+        # Insert the analysis data
+        cursor.execute("""
+            INSERT INTO ai_analysis (
+                resume_id, model_used, resume_score, job_role
+            ) VALUES (?, ?, ?, ?)
+        """, (
+            resume_id,
+            analysis_data.get('model_used', ''),
+            analysis_data.get('resume_score', 0),
+            analysis_data.get('job_role', '')
+        ))
+        
+        conn.commit()
+        return cursor.lastrowid
+    except Exception as e:
+        print(f"Error saving AI analysis data: {e}")
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
+
+def get_ai_analysis_stats():
+    """Get statistics about AI analyzer usage"""
+    conn = get_database_connection()
+    cursor = conn.cursor()
+    
+    try:
+        # Check if the ai_analysis table exists
+        cursor.execute("""
+            SELECT name FROM sqlite_master WHERE type='table' AND name='ai_analysis'
+        """)
+        
+        if not cursor.fetchone():
+            return {
+                "total_analyses": 0,
+                "model_usage": [],
+                "average_score": 0,
+                "top_job_roles": []
+            }
+        
+        # Get total number of analyses
+        cursor.execute("SELECT COUNT(*) FROM ai_analysis")
+        total_analyses = cursor.fetchone()[0]
+        
+        # Get model usage statistics
+        cursor.execute("""
+            SELECT model_used, COUNT(*) as count
+            FROM ai_analysis
+            GROUP BY model_used
+            ORDER BY count DESC
+        """)
+        model_usage = [{"model": row[0], "count": row[1]} for row in cursor.fetchall()]
+        
+        # Get average resume score
+        cursor.execute("SELECT AVG(resume_score) FROM ai_analysis")
+        average_score = cursor.fetchone()[0] or 0
+        
+        # Get top job roles
+        cursor.execute("""
+            SELECT job_role, COUNT(*) as count
+            FROM ai_analysis
+            GROUP BY job_role
+            ORDER BY count DESC
+            LIMIT 5
+        """)
+        top_job_roles = [{"role": row[0], "count": row[1]} for row in cursor.fetchall()]
+        
+        return {
+            "total_analyses": total_analyses,
+            "model_usage": model_usage,
+            "average_score": round(average_score, 1),
+            "top_job_roles": top_job_roles
+        }
+    except Exception as e:
+        print(f"Error getting AI analysis stats: {e}")
+        return {
+            "total_analyses": 0,
+            "model_usage": [],
+            "average_score": 0,
+            "top_job_roles": []
+        }
+    finally:
+        conn.close()
+
+def get_detailed_ai_analysis_stats():
+    """Get detailed statistics about AI analyzer usage including daily trends"""
+    conn = get_database_connection()
+    cursor = conn.cursor()
+    
+    try:
+        # Check if the ai_analysis table exists
+        cursor.execute("""
+            SELECT name FROM sqlite_master WHERE type='table' AND name='ai_analysis'
+        """)
+        
+        if not cursor.fetchone():
+            return {
+                "total_analyses": 0,
+                "model_usage": [],
+                "average_score": 0,
+                "top_job_roles": [],
+                "daily_trend": [],
+                "score_distribution": [],
+                "recent_analyses": []
+            }
+        
+        # Get total number of analyses
+        cursor.execute("SELECT COUNT(*) FROM ai_analysis")
+        total_analyses = cursor.fetchone()[0]
+        
+        # Get model usage statistics
+        cursor.execute("""
+            SELECT model_used, COUNT(*) as count
+            FROM ai_analysis
+            GROUP BY model_used
+            ORDER BY count DESC
+        """)
+        model_usage = [{"model": row[0], "count": row[1]} for row in cursor.fetchall()]
+        
+        # Get average resume score
+        cursor.execute("SELECT AVG(resume_score) FROM ai_analysis")
+        average_score = cursor.fetchone()[0] or 0
+        
+        # Get top job roles
+        cursor.execute("""
+            SELECT job_role, COUNT(*) as count
+            FROM ai_analysis
+            GROUP BY job_role
+            ORDER BY count DESC
+            LIMIT 5
+        """)
+        top_job_roles = [{"role": row[0], "count": row[1]} for row in cursor.fetchall()]
+        
+        # Get daily trend for the last 7 days
+        cursor.execute("""
+            SELECT DATE(created_at) as date, COUNT(*) as count
+            FROM ai_analysis
+            WHERE created_at >= date('now', '-7 days')
+            GROUP BY DATE(created_at)
+            ORDER BY date
+        """)
+        daily_trend = [{"date": row[0], "count": row[1]} for row in cursor.fetchall()]
+        
+        # Get score distribution
+        score_ranges = [
+            {"min": 0, "max": 20, "range": "0-20"},
+            {"min": 21, "max": 40, "range": "21-40"},
+            {"min": 41, "max": 60, "range": "41-60"},
+            {"min": 61, "max": 80, "range": "61-80"},
+            {"min": 81, "max": 100, "range": "81-100"}
+        ]
+        
+        score_distribution = []
+        for range_info in score_ranges:
+            cursor.execute("""
+                SELECT COUNT(*) FROM ai_analysis 
+                WHERE resume_score >= ? AND resume_score <= ?
+            """, (range_info["min"], range_info["max"]))
+            count = cursor.fetchone()[0]
+            score_distribution.append({"range": range_info["range"], "count": count})
+        
+        # Get recent analyses
+        cursor.execute("""
+            SELECT model_used, resume_score, job_role, datetime(created_at) as date
+            FROM ai_analysis
+            ORDER BY created_at DESC
+            LIMIT 5
+        """)
+        recent_analyses = [
+            {
+                "model": row[0],
+                "score": row[1],
+                "job_role": row[2],
+                "date": row[3]
+            } for row in cursor.fetchall()
+        ]
+        
+        return {
+            "total_analyses": total_analyses,
+            "model_usage": model_usage,
+            "average_score": round(average_score, 1),
+            "top_job_roles": top_job_roles,
+            "daily_trend": daily_trend,
+            "score_distribution": score_distribution,
+            "recent_analyses": recent_analyses
+        }
+    except Exception as e:
+        print(f"Error getting detailed AI analysis stats: {e}")
+        return {
+            "total_analyses": 0,
+            "model_usage": [],
+            "average_score": 0,
+            "top_job_roles": [],
+            "daily_trend": [],
+            "score_distribution": [],
+            "recent_analyses": []
+        }
+    finally:
+        conn.close()
+
+def reset_ai_analysis_stats():
+    """Reset AI analysis statistics by truncating the ai_analysis table"""
+    conn = get_database_connection()
+    cursor = conn.cursor()
+    
+    try:
+        # Check if the ai_analysis table exists
+        cursor.execute("""
+            SELECT name FROM sqlite_master WHERE type='table' AND name='ai_analysis'
+        """)
+        
+        if not cursor.fetchone():
+            return {"success": False, "message": "AI analysis table does not exist"}
+        
+        # Delete all records from the ai_analysis table
+        cursor.execute("DELETE FROM ai_analysis")
+        conn.commit()
+        
+        return {"success": True, "message": "AI analysis statistics have been reset successfully"}
+    except Exception as e:
+        conn.rollback()
+        print(f"Error resetting AI analysis stats: {e}")
+        return {"success": False, "message": f"Error resetting AI analysis statistics: {str(e)}"}
+    finally:
+        conn.close()

@@ -9,10 +9,24 @@ class ResumeParser:
         
     def extract_text_from_pdf(self, pdf_file):
         try:
-            pdf_reader = PyPDF2.PdfReader(BytesIO(pdf_file.read()))
+            # Handle different file input types
+            if hasattr(pdf_file, 'read'):
+                # If it's a file-like object
+                file_content = pdf_file.read()
+                pdf_file.seek(0)  # Reset file pointer
+            else:
+                # If it's already bytes
+                file_content = pdf_file
+                
+            pdf_reader = PyPDF2.PdfReader(BytesIO(file_content))
             text = ""
             for page in pdf_reader.pages:
-                text += page.extract_text() + "\n"
+                page_text = page.extract_text()
+                if page_text:
+                    text += page_text + "\n"
+                else:
+                    # Handle empty page text
+                    text += "\n"
             return text.strip()
         except Exception as e:
             print(f"Error extracting text from PDF: {e}")
@@ -30,8 +44,8 @@ class ResumeParser:
             return ""
             
     def extract_text(self, file):
-        file_content = file.read()
-        file.seek(0)  # Reset file pointer
+        # Reset file pointer to beginning
+        file.seek(0)
         
         if file.name.endswith('.pdf'):
             return self.extract_text_from_pdf(file)

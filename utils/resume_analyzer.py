@@ -123,7 +123,17 @@ class ResumeAnalyzer:
             import io
             
             # Create a PDF reader object
-            pdf_reader = PyPDF2.PdfReader(io.BytesIO(file.read()))
+            # First make sure we have the file content as bytes
+            if hasattr(file, 'read'):
+                # If it's already a file-like object, read it
+                file_content = file.read()
+                file.seek(0)  # Reset file pointer
+            else:
+                # If it's already bytes
+                file_content = file
+                
+            # Create BytesIO from bytes content
+            pdf_reader = PyPDF2.PdfReader(io.BytesIO(file_content))
             
             # Extract text from all pages
             text = ""
@@ -434,156 +444,172 @@ class ResumeAnalyzer:
 
     def analyze_resume(self, resume_data, job_requirements):
         """Analyze resume and return scores and recommendations"""
-        text = resume_data.get('raw_text', '')
-        
-        # Extract personal information
-        personal_info = self.extract_personal_info(text)
-        
-        # First detect document type
-        doc_type = self.detect_document_type(text)
-        if doc_type != 'resume':
+        try:
+            text = resume_data.get('raw_text', '')
+            
+            # Extract personal information
+            personal_info = self.extract_personal_info(text)
+            
+            # First detect document type
+            doc_type = self.detect_document_type(text)
+            if doc_type != 'resume':
+                return {
+                    'ats_score': 0,
+                    'document_type': doc_type,
+                    'keyword_match': {'score': 0, 'found_skills': [], 'missing_skills': []},
+                    'section_score': 0,
+                    'format_score': 0,
+                    'suggestions': [f"This appears to be a {doc_type} document. Please upload a resume for ATS analysis."]
+                }
+                
+            # Calculate keyword match
+            required_skills = job_requirements.get('required_skills', [])
+            keyword_match = self.calculate_keyword_match(text, required_skills)
+            
+            # Extract all resume sections
+            education = self.extract_education(text)
+            experience = self.extract_experience(text)
+            projects = self.extract_projects(text)
+            skills = list(self.extract_skills(text))  # Convert skills set to list
+            summary = self.extract_summary(text)
+            
+            # Check resume sections
+            section_score = self.check_resume_sections(text)
+            
+            # Check formatting
+            format_score, format_deductions = self.check_formatting(text)
+            
+            # Generate section-specific suggestions
+            contact_suggestions = []
+            if not personal_info.get('email'):
+                contact_suggestions.append("Add your email address")
+            if not personal_info.get('phone'):
+                contact_suggestions.append("Add your phone number")
+            if not personal_info.get('linkedin'):
+                contact_suggestions.append("Add your LinkedIn profile URL")
+            
+            summary_suggestions = []
+            if not summary:
+                summary_suggestions.append("Add a professional summary to highlight your key qualifications")
+            elif len(summary.split()) < 30:
+                summary_suggestions.append("Expand your professional summary to better highlight your experience and goals")
+            elif len(summary.split()) > 100:
+                summary_suggestions.append("Consider making your summary more concise (aim for 50-75 words)")
+            
+            skills_suggestions = []
+            if not skills:
+                skills_suggestions.append("Add a dedicated skills section")
+            if isinstance(skills, (list, set)) and len(list(skills)) < 5:
+                skills_suggestions.append("List more relevant technical and soft skills")
+            if keyword_match['score'] < 70:
+                skills_suggestions.append("Add more skills that match the job requirements")
+            
+            experience_suggestions = []
+            if not experience:
+                experience_suggestions.append("Add your work experience section")
+            else:
+                has_dates = any(re.search(r'\b(19|20)\d{2}\b', exp) for exp in experience)
+                has_bullets = any(re.search(r'[•\-\*]', exp) for exp in experience)
+                has_action_verbs = any(re.search(r'\b(developed|managed|created|implemented|designed|led|improved)\b', 
+                                               exp.lower()) for exp in experience)
+                
+                if not has_dates:
+                    experience_suggestions.append("Include dates for each work experience")
+                if not has_bullets:
+                    experience_suggestions.append("Use bullet points to list your achievements and responsibilities")
+                if not has_action_verbs:
+                    experience_suggestions.append("Start bullet points with strong action verbs")
+            
+            education_suggestions = []
+            if not education:
+                education_suggestions.append("Add your educational background")
+            else:
+                has_dates = any(re.search(r'\b(19|20)\d{2}\b', edu) for edu in education)
+                has_degree = any(re.search(r'\b(bachelor|master|phd|b\.|m\.|diploma)\b', 
+                                         edu.lower()) for edu in education)
+                has_gpa = any(re.search(r'\b(gpa|cgpa|grade|percentage)\b', 
+                                      edu.lower()) for edu in education)
+                
+                if not has_dates:
+                    education_suggestions.append("Include graduation dates")
+                if not has_degree:
+                    education_suggestions.append("Specify your degree type")
+                if not has_gpa and job_requirements.get('require_gpa', False):
+                    education_suggestions.append("Include your GPA if it's above 3.0")
+            
+            format_suggestions = []
+            if format_score < 100:
+                format_suggestions.extend(format_deductions)
+            
+            # Calculate section-specific scores
+            contact_score = 100 - (len(contact_suggestions) * 25)  # -25 for each missing item
+            summary_score = 100 - (len(summary_suggestions) * 33)  # -33 for each issue
+            skills_score = keyword_match['score']
+            experience_score = 100 - (len(experience_suggestions) * 25)
+            education_score = 100 - (len(education_suggestions) * 25)
+            
+            # Calculate overall ATS score with weighted components
+            ats_score = (
+                int(round(contact_score * 0.1)) +      # 10% weight for contact info
+                int(round(summary_score * 0.1)) +      # 10% weight for summary
+                int(round(skills_score * 0.3)) +       # 30% weight for skills match
+                int(round(experience_score * 0.2)) +   # 20% weight for experience
+                int(round(education_score * 0.1)) +    # 10% weight for education
+                int(round(format_score * 0.2))         # 20% weight for formatting
+            )
+            
+            # Combine all suggestions into a single list
+            suggestions = []
+            suggestions.extend(contact_suggestions)
+            suggestions.extend(summary_suggestions)
+            suggestions.extend(skills_suggestions)
+            suggestions.extend(experience_suggestions)
+            suggestions.extend(education_suggestions)
+            suggestions.extend(format_suggestions)
+            
+            if not suggestions:
+                suggestions.append("Your resume is well-optimized for ATS systems")
+            
+            # Return final structured result
             return {
+                **personal_info,  # Include extracted personal info
+                'ats_score': ats_score,
+                'document_type': 'resume',
+                'keyword_match': keyword_match,
+                'section_score': section_score,
+                'format_score': format_score,
+                'education': education,
+                'experience': experience,
+                'projects': projects,
+                'skills': skills,
+                'summary': summary,
+                'suggestions': suggestions,
+                'contact_suggestions': contact_suggestions,
+                'summary_suggestions': summary_suggestions,
+                'skills_suggestions': skills_suggestions,
+                'experience_suggestions': experience_suggestions,
+                'education_suggestions': education_suggestions,
+                'format_suggestions': format_suggestions,
+                'section_scores': {
+                    'contact': contact_score,
+                    'summary': summary_score,
+                    'skills': skills_score,
+                    'experience': experience_score,
+                    'education': education_score,
+                    'format': format_score
+                }
+            }
+        except Exception as e:
+            import traceback
+            print(f"Error analyzing resume: {str(e)}")
+            print(traceback.format_exc())
+            # Return a default error response
+            return {
+                'error': f"Resume analysis failed: {str(e)}",
                 'ats_score': 0,
-                'document_type': doc_type,
+                'document_type': 'unknown',
                 'keyword_match': {'score': 0, 'found_skills': [], 'missing_skills': []},
                 'section_score': 0,
                 'format_score': 0,
-                'suggestions': [f"This appears to be a {doc_type} document. Please upload a resume for ATS analysis."]
+                'suggestions': [f"Error analyzing resume: {str(e)}. Please check your file and try again."]
             }
-            
-        # Calculate keyword match
-        required_skills = job_requirements.get('required_skills', [])
-        keyword_match = self.calculate_keyword_match(text, required_skills)
-        
-        # Extract all resume sections
-        education = self.extract_education(text)
-        experience = self.extract_experience(text)
-        projects = self.extract_projects(text)
-        skills = list(self.extract_skills(text))  # Convert skills set to list
-        summary = self.extract_summary(text)
-        
-        # Check resume sections
-        section_score = self.check_resume_sections(text)
-        
-        # Check formatting
-        format_score, format_deductions = self.check_formatting(text)
-        
-        # Generate section-specific suggestions
-        contact_suggestions = []
-        if not personal_info.get('email'):
-            contact_suggestions.append("Add your email address")
-        if not personal_info.get('phone'):
-            contact_suggestions.append("Add your phone number")
-        if not personal_info.get('linkedin'):
-            contact_suggestions.append("Add your LinkedIn profile URL")
-        
-        summary_suggestions = []
-        if not summary:
-            summary_suggestions.append("Add a professional summary to highlight your key qualifications")
-        elif len(summary.split()) < 30:
-            summary_suggestions.append("Expand your professional summary to better highlight your experience and goals")
-        elif len(summary.split()) > 100:
-            summary_suggestions.append("Consider making your summary more concise (aim for 50-75 words)")
-        
-        skills_suggestions = []
-        if not skills:
-            skills_suggestions.append("Add a dedicated skills section")
-        if isinstance(skills, (list, set)) and len(list(skills)) < 5:
-            skills_suggestions.append("List more relevant technical and soft skills")
-        if keyword_match['score'] < 70:
-            skills_suggestions.append("Add more skills that match the job requirements")
-        
-        experience_suggestions = []
-        if not experience:
-            experience_suggestions.append("Add your work experience section")
-        else:
-            has_dates = any(re.search(r'\b(19|20)\d{2}\b', exp) for exp in experience)
-            has_bullets = any(re.search(r'[•\-\*]', exp) for exp in experience)
-            has_action_verbs = any(re.search(r'\b(developed|managed|created|implemented|designed|led|improved)\b', 
-                                           exp.lower()) for exp in experience)
-            
-            if not has_dates:
-                experience_suggestions.append("Include dates for each work experience")
-            if not has_bullets:
-                experience_suggestions.append("Use bullet points to list your achievements and responsibilities")
-            if not has_action_verbs:
-                experience_suggestions.append("Start bullet points with strong action verbs")
-        
-        education_suggestions = []
-        if not education:
-            education_suggestions.append("Add your educational background")
-        else:
-            has_dates = any(re.search(r'\b(19|20)\d{2}\b', edu) for edu in education)
-            has_degree = any(re.search(r'\b(bachelor|master|phd|b\.|m\.|diploma)\b', 
-                                     edu.lower()) for edu in education)
-            has_gpa = any(re.search(r'\b(gpa|cgpa|grade|percentage)\b', 
-                                  edu.lower()) for edu in education)
-            
-            if not has_dates:
-                education_suggestions.append("Include graduation dates")
-            if not has_degree:
-                education_suggestions.append("Specify your degree type")
-            if not has_gpa and job_requirements.get('require_gpa', False):
-                education_suggestions.append("Include your GPA if it's above 3.0")
-        
-        format_suggestions = []
-        if format_score < 100:
-            format_suggestions.extend(format_deductions)
-        
-        # Calculate section-specific scores
-        contact_score = 100 - (len(contact_suggestions) * 25)  # -25 for each missing item
-        summary_score = 100 - (len(summary_suggestions) * 33)  # -33 for each issue
-        skills_score = keyword_match['score']
-        experience_score = 100 - (len(experience_suggestions) * 25)
-        education_score = 100 - (len(education_suggestions) * 25)
-        
-        # Calculate overall ATS score with weighted components
-        ats_score = (
-            int(round(contact_score * 0.1)) +      # 10% weight for contact info
-            int(round(summary_score * 0.1)) +      # 10% weight for summary
-            int(round(skills_score * 0.3)) +       # 30% weight for skills match
-            int(round(experience_score * 0.2)) +   # 20% weight for experience
-            int(round(education_score * 0.1)) +    # 10% weight for education
-            int(round(format_score * 0.2))         # 20% weight for formatting
-        )
-        
-        # Combine all suggestions into a single list
-        suggestions = []
-        suggestions.extend(contact_suggestions)
-        suggestions.extend(summary_suggestions)
-        suggestions.extend(skills_suggestions)
-        suggestions.extend(experience_suggestions)
-        suggestions.extend(education_suggestions)
-        suggestions.extend(format_suggestions)
-        
-        if not suggestions:
-            suggestions.append("Your resume is well-optimized for ATS systems")
-        
-        return {
-            **personal_info,  # Include extracted personal info
-            'ats_score': ats_score,
-            'document_type': 'resume',
-            'keyword_match': keyword_match,
-            'section_score': section_score,
-            'format_score': format_score,
-            'education': education,
-            'experience': experience,
-            'projects': projects,
-            'skills': skills,
-            'summary': summary,
-            'suggestions': suggestions,
-            'contact_suggestions': contact_suggestions,
-            'summary_suggestions': summary_suggestions,
-            'skills_suggestions': skills_suggestions,
-            'experience_suggestions': experience_suggestions,
-            'education_suggestions': education_suggestions,
-            'format_suggestions': format_suggestions,
-            'section_scores': {
-                'contact': contact_score,
-                'summary': summary_score,
-                'skills': skills_score,
-                'experience': experience_score,
-                'education': education_score,
-                'format': format_score
-            }
-        }
