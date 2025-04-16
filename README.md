@@ -70,9 +70,6 @@
 
 **🎉 Why Use Smart Resume AI?**  
 Get real-time feedback, boost your resume's impact, and maximize your chances of getting shortlisted—all with a sleek and intuitive interface.  
-
-## <img src="https://github.com/user-attachments/assets/e5ac1371-6ac4-48b6-b95c-5ef9afaf1353" width="30"> **Live Demo**  
-
 ## <img src="https://github.com/user-attachments/assets/0cefad05-58a9-4aa0-a070-f75a0c9b0353" height="32px">  Tech Stack 
 <details>
   <summary>🌐 Frontend</summary>
@@ -307,11 +304,6 @@ Join the mission! Here's how:
 | ✨ **Customizable Templates**  | Choose from **4 sleek designs**: Modern, Minimal, Professional, Creative.                       |  
 | 📈 **AI-Driven Insights**      | Receive smart suggestions for optimizing content, formatting, and keywords.                    |  
 | 🎯 **Role-specific Guidance**  | Tailored recommendations for matching job descriptions and standing out in applications.        |  
-
-
-## 📄 **License**  
-
-This project is licensed under the [MIT License](https://github.com/Hunterdii/resume-analyzer-ai/blob/main/LICENSE).  
 
 
 ## 🌟 **GitHub Repo**  
