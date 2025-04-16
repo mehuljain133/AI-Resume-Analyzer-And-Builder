@@ -38,9 +38,9 @@ import streamlit as st
 import datetime
 
 # Access the API key from secrets
-api_key = st.secrets["API_KEY"]
+# api_key = st.secrets["API_KEY"]
 
-st.write("Your API key is loaded (but not displayed here!)")
+# st.write("Your API key is loaded (but not displayed here!)")
 
 # Set page config at the very beginning
 st.set_page_config(
