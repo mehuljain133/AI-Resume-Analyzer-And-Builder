@@ -37,10 +37,7 @@ import json
 import streamlit as st
 import datetime
 
-# Access the API key from secrets
-api_key = st.secrets["API_KEY"]
 
-st.write("Your API key is loaded (but not displayed here!)")
 
 # Set page config at the very beginning
 st.set_page_config(
@@ -49,6 +46,10 @@ st.set_page_config(
     layout="wide"
 )
 
+# Access the API key from secrets
+api_key = st.secrets["API_KEY"]
+
+st.write("Your API key is loaded (but not displayed here!)")
 
 class ResumeApp:
     def __init__(self):
