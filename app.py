@@ -49,8 +49,6 @@ st.set_page_config(
 # Access the API key from secrets
 api_key = st.secrets["API_KEY"]
 
-st.write("Your API key is loaded (but not displayed here!)")
-
 class ResumeApp:
     def __init__(self):
         """Initialize the application"""
