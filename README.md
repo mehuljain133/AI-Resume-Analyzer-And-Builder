@@ -1,7 +1,7 @@
 <p align="center">
   <img src="https://github.com/user-attachments/assets/76906dbc-343d-4267-ace5-048d428fff42" width="150px" alt="Smart AI Resume Analyzer Logo"/>
   <h1>🏝️ Smart AI Resume Analyzer & Builder 🏝️</h1>
-  <p><small>Your Intelligent Career Partner | Crafted with Love ❤️ by Mehul Jain</small></p>
+  <p><small>Your Intelligent Career Partner | Crafted with Love ❤️ by Mehul Jain for Company Sharp Aspire INC(SAI)</small></p>
 </p>
 
 ---
