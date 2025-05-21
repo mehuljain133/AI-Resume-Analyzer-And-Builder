@@ -86,6 +86,21 @@
 
 ---
 
+## Admin Login Credentials
+
+### 🔹 New Login Credentials:
+   - **Username:**
+```python3
+admin@example.com
+```
+   - **Password:**
+```python3
+admin123
+```
+
+### 🔹 Admin Panel Access:
+   - The **Admin Section** will be visible **only after login**, right below the **Dashboard** section.
+
 ## 📄 **Contributing**
 
 We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
