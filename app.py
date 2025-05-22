@@ -47,7 +47,7 @@ st.set_page_config(
 )
 
 # Access the API key from secrets
-api_key = st.secrets["API_KEY"]
+#api_key = st.secrets["API_KEY"]
 
 class ResumeApp:
     def __init__(self):
